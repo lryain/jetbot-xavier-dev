@@ -1,0 +1,25 @@
+<launch>
+    <arg name="language" default="zh"/>  <!-- Options: fr or en -->
+    <arg name="speaking_rate" default="0.85"/> <!-- Range: [0.25, 4.0] -->
+    <arg name="single_task_per_person" default="false"/>
+    <arg name="record_session" default="false"/>
+    <arg name="use_after_task_delay_duration_topic" default="true"/>
+    <arg name="camera_2d_wide_enabled" default="false"/>
+
+    <node pkg="control_panel" type="control_panel_node" name="control_panel_node" output="screen">
+        <param name="camera_2d_wide_enabled" value="$(arg camera_2d_wide_enabled)"/>
+    </node>
+
+    <node pkg="smart_speaker" type="smart_speaker_rss_node" name="smart_speaker_rss_node" output="screen" launch-prefix="bash -c 'sleep 60; $0 $1 $2 $3 $4 $5 $6' ">
+        <param name="language" value="$(arg language)"/>
+        <param name="story_path_en" value="$(find smart_speaker)/story_en.txt"/>
+        <param name="story_path_fr" value="$(find smart_speaker)/story_fr.txt"/>
+        <param name="song_path" value="$(find smart_speaker)/admiralbob_wanderer.mp3"/>
+        <param name="after_task_delay_duration_s" value="5"/>
+    </node>
+
+    <include file="$(find t_top)/launch/bringup.launch">
+        <arg name="language" value="$(arg language)"/>
+        <arg name="slam" value="false"/>
+    </include>
+</launch>

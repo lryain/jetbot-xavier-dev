@@ -1,0 +1,30 @@
+<launch>
+    <arg name="use_echo_cancellation" default="false"/>
+    <arg name="pulse_audio_source"/>
+    <arg name="camera_2d_wide_enabled"/>
+    <arg name="pulse_audio_sink"/>
+    <arg name="echo_cancellation_dest"/>
+    <arg name="ec_volume_percent"/>
+
+    <!-- Sound -->
+    <node if="$(arg use_echo_cancellation)" pkg="odas_ros" type="echocancel.sh" name="echocancel" args="$(arg pulse_audio_source) $(arg pulse_audio_sink) $(arg echo_cancellation_dest) $(arg ec_volume_percent)" />
+
+    <node pkg="audio_utils" type="capture_node" name="capture_node" output="screen" respawn="true">
+        <param name="backend" value="pulse_audio"/>
+        <param unless="$(arg use_echo_cancellation)" name="device" value="$(arg pulse_audio_source)"/>
+        <param if="$(arg use_echo_cancellation)" name="device" value="$(arg echo_cancellation_dest)_ec"/>
+        <param name="format" value="signed_32"/>
+        <param name="channel_count" value="6"/>
+        <param name="sampling_frequency" value="16000"/>
+        <param name="frame_sample_count" value="1024"/>
+        <param name="merge" value="false"/>
+        <param name="gain" value="1.0"/>
+        <param name="latency_us" value="64000"/>
+
+        <remap from="audio_out" to="audio_input_before_ego_noise_signed_32_16000"/>
+
+        <rosparam param="channel_map">
+            [front-left, front-right, rear-left, rear-right, front-center, lfe]
+        </rosparam>
+    </node>
+</launch>
