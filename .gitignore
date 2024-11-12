@@ -1,9 +1,11 @@
 .idea
 .vscode
+.catkin_tools
+bk
 src/jetbot-xavier-dev/ros/utils/dnn_utils/models
 src/jetbot-xavier-dev/ros/utils/dnn_utils/weights
 src/jetbot-xavier-dev/ros/behaviors/piper_ros/models
-
+src/opentera-webrtc-ros
 devel/
 logs/
 build/
