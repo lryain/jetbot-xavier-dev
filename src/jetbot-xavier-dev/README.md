@@ -10,6 +10,7 @@ interacting with people.
 
 ## Authors
 
+- Kevin.Liu
 - Marc-Antoine Maheux (@mamaheux)
 - Charles Caya (@chcaya)
 - Alexandre Filion (@alexfilion)
